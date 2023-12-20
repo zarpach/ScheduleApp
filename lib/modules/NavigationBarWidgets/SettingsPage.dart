@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:schedule_app/modules/SettingsListTiles/ProfileListTileWidget.dart';
 
 class SettingsPage extends StatefulWidget {
 
@@ -13,8 +14,11 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   bool isDark = false;
+
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: CustomScrollView(
           physics: const BouncingScrollPhysics(),
@@ -22,7 +26,7 @@ class _SettingsPageState extends State<SettingsPage> {
             SliverPadding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               sliver: SliverAppBar(
-                expandedHeight: 185.0,
+                expandedHeight: height * 0.20,
                 flexibleSpace: FlexibleSpaceBar(
                   titlePadding: const EdgeInsets.only(bottom: 24.0),
                   title: Text(
@@ -85,47 +89,8 @@ class _SettingsPageState extends State<SettingsPage> {
               child: Gap(16),
             ),
             SliverList.list(
-                children: [
-                  ListTile(
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 35.0, vertical: 10.0),
-                    leading: Icon(Icons.account_circle_outlined),
-                    title: Text(
-                        'Profile settings',
-                        style: GoogleFonts.roboto(
-                            fontSize: 22,
-                            fontWeight: FontWeight.w400,
-                            letterSpacing: 0
-                        )
-                    ),
-                    subtitle: const Text('Field of study, group'),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute<Widget>(
-                            builder: (context) {
-                              return Scaffold(
-                                appBar: AppBar(title: const Text(
-                                    'ListTile Hero')),
-                                body: Center(
-                                  child: Hero(
-                                    tag: 'ListTile-Hero',
-                                    child: Material(
-                                      child: ListTile(
-                                        title: const Text('ListTile with Hero'),
-                                        subtitle: const Text(
-                                            'Tap here to go back'),
-                                        onTap: () {
-                                          Navigator.pop(context);
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            }),
-                      );
-                    },
-                  ),
+                children: const [
+                  ProfileListTile(),
                 ]
             )
           ],

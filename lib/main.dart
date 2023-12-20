@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'IUCA Schedule',
       debugShowCheckedModeBanner: false,
+      color: Colors.white,
       theme: ThemeData(
         useMaterial3: true,
         brightness: Brightness.light,
@@ -52,20 +53,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
   int currentPageIndex = 0;
-
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,18 +66,20 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
+        // status bar
         statusBarColor: Colors.transparent,
         statusBarBrightness: Theme.of(context).brightness,
         statusBarIconBrightness:
-        appBrightness == Brightness.dark ?
-          Brightness.light
-              :
-          Brightness.dark,
+        appBrightness == Brightness.dark ? Brightness.light : Brightness.dark,
 
-        systemNavigationBarIconBrightness: Brightness.dark,
+        // system navigation bar
+        systemNavigationBarColor: Colors.transparent, // Setting a transparent navigation bar color
+        systemNavigationBarContrastEnforced: true,
+        systemNavigationBarIconBrightness: Brightness.light,
       ),
       child: Scaffold(
         bottomNavigationBar: NavigationBar(
+          labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
           height: 90,
           onDestinationSelected: (int index) {
             setState(() {
@@ -118,21 +108,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
         body: <Widget>[
-          // Center is a layout widget. It takes a single child and positions it
-          // in the middle of the parent.
-            // Column is also a layout widget. It takes a list of children and
-            // arranges them vertically. By default, it sizes itself to fit its
-            // children horizontally, and tries to be as tall as its parent.
-            //
-            // Column has various properties to control how it sizes itself and
-            // how it positions its children. Here we use mainAxisAlignment to
-            // center the children vertically; the main axis here is the vertical
-            // axis because Columns are vertical (the cross axis would be
-            // horizontal).
-            //
-            // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-            // action in the IDE, or press "p" in the console), to see the
-            // wireframe for each widget.
           const Home(),
           const TranscriptPage(),
           const SettingsPage(),
