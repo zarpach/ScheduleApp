@@ -68,14 +68,14 @@ class _MyHomePageState extends State<MyHomePage> {
       value: SystemUiOverlayStyle(
         // status bar
         statusBarColor: Colors.transparent,
-        statusBarBrightness: Theme.of(context).brightness,
+        statusBarBrightness: appBrightness,
         statusBarIconBrightness:
         appBrightness == Brightness.dark ? Brightness.light : Brightness.dark,
 
         // system navigation bar
-        systemNavigationBarColor: Colors.transparent, // Setting a transparent navigation bar color
-        systemNavigationBarContrastEnforced: true,
-        systemNavigationBarIconBrightness: Brightness.light,
+        // Setting a transparent navigation bar color
+        systemNavigationBarColor: Colors.transparent,
+        systemNavigationBarContrastEnforced: false,
       ),
       child: Scaffold(
         bottomNavigationBar: NavigationBar(
