@@ -83,7 +83,8 @@ class _MyHomePageState extends State<MyHomePage> {
           height: 90,
           onDestinationSelected: (int index) {
             setState(() {
-              currentPageIndex = index;});
+              currentPageIndex = index;
+            });
           },
           selectedIndex: currentPageIndex,
           destinations: const <Widget>[
@@ -94,8 +95,8 @@ class _MyHomePageState extends State<MyHomePage> {
               tooltip: 'Schedule',
             ),
             NavigationDestination(
-              selectedIcon: Icon(Icons.font_download_rounded),
-              icon: Icon(Icons.font_download_outlined),
+              selectedIcon: Icon(Icons.text_increase),
+              icon: Icon(Icons.text_increase_rounded),
               label: 'Transcript',
               tooltip: 'Transcript',
             ),

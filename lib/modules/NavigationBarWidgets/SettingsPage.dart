@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:schedule_app/modules/SettingsListTiles/FeedbackListTile.dart';
+import 'package:schedule_app/modules/SettingsListTiles/LanguageListTile.dart';
 import 'package:schedule_app/modules/SettingsListTiles/ProfileListTileWidget.dart';
+import 'package:schedule_app/modules/SettingsListTiles/ThemeSettingsListTile.dart';
 
 class SettingsPage extends StatefulWidget {
 
@@ -91,6 +94,9 @@ class _SettingsPageState extends State<SettingsPage> {
             SliverList.list(
                 children: const [
                   ProfileListTile(),
+                  ThemeListTile(),
+                  LanguageListTile(),
+                  FeedbackListTile()
                 ]
             )
           ],

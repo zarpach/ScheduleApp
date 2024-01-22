@@ -26,8 +26,7 @@ class ProfileListTile extends StatelessWidget {
           MaterialPageRoute<Widget>(
               builder: (context) {
                 return Scaffold(
-                  appBar: AppBar(title: const Text(
-                      'ListTile Hero')),
+                  appBar: AppBar(),
                   body: Center(
                     child: Hero(
                       tag: 'ListTile-Hero',

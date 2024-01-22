@@ -8,8 +8,8 @@ class ExpandLesson extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.lightGreen,
-      child: Text('Press'),
+      color: Theme.of(context).scaffoldBackgroundColor,
+      child: const Center(child: Text('CONTENT')),
     );
   }
 }
