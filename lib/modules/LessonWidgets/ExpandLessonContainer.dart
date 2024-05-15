@@ -7,9 +7,18 @@ class ExpandLesson extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Theme.of(context).scaffoldBackgroundColor,
-      child: const Center(child: Text('CONTENT')),
+    return Scaffold(
+      appBar: AppBar(
+        leading: InkWell(
+          borderRadius: BorderRadius.circular(50),
+          onTap: () => {
+            Navigator.of(context).pop()
+          },
+          child: const Icon(Icons.close),
+        ),
+      ),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      body: const Center(child: Text('CONTENT')),
     );
   }
 }

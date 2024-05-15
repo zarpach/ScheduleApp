@@ -5,6 +5,8 @@ import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
 import 'package:schedule_app/modules/LessonWidgets/ExpandLessonContainer.dart';
+import 'package:schedule_app/modules/modalSheets/scheduleSettingsModal.dart';
+import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -32,13 +34,25 @@ class _HomeNavState extends State<Home> {
     {'first': 'Get rest...', 'second': ''},
   ];
 
+  double calculateListItemHeight(BuildContext context, double toolbarHeight) {
+    // Get the parent container's height (assuming it's a Container)
+    final parentHeight = MediaQuery.of(context).size.height;
+
+    // Calculate remaining space after subtracting padding and list view overhead
+    final availableHeight = parentHeight - // Padding top/bottom
+        - toolbarHeight; // Assuming there's a toolbar
+
+    // Calculate height for each item with equal distribution
+    final listItemHeight = availableHeight / 6;
+    return listItemHeight;
+  }
+
   @override
   Widget build(BuildContext context) {
     Brightness appBrightness = Theme.of(context).brightness;
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    return Scaffold(
-      body: Padding(
+    return Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,7 +71,8 @@ class _HomeNavState extends State<Home> {
                           fontWeight: FontWeight.w800,
                           letterSpacing: -2,
                           fontSize: 48
-                        )),
+                        )
+                    ),
                     const Gap(16),
                     JustTheTooltip(
                       backgroundColor: Theme.of(context).colorScheme.onSurface,
@@ -67,17 +82,29 @@ class _HomeNavState extends State<Home> {
                         child: Text(
                           'Schedule settings',
                           style: TextStyle(
-                            color: appBrightness == Brightness.dark ? Colors.black87 : Colors.white70,
+                            color: appBrightness == Brightness.dark ?
+                            Colors.black87 : Colors.white70,
+                            letterSpacing: -0.2
                           ),
                         ),
                       ),
                       child: InkWell(
                         borderRadius: BorderRadius.circular(12),
-                        onTap: () => {},
+                        onTap: () => {
+                          WoltModalSheet.show(
+                              context: context,
+                              pageListBuilder: (modalSheetContext) {
+                                return [
+                                  scheduleSettingsModal()
+                                ];
+                              }
+                            )
+                        },
                         child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
+
                                 DateFormat('EEEE').format(DateTime.now()), // Current weekday, using 'EEEE' format of current date
                                 style: GoogleFonts.manrope(
                                     fontWeight: FontWeight.w300,
@@ -89,12 +116,10 @@ class _HomeNavState extends State<Home> {
                         ),
                       ),
                     )
-
-
                   ],
                 ),
               ),
-              const Gap(20),
+              const Gap(16),
                 Expanded(
                   child: Container(
                     clipBehavior: Clip.antiAlias,
@@ -103,18 +128,22 @@ class _HomeNavState extends State<Home> {
                       borderRadius: BorderRadius.circular(12)
                     ),
                     child: ListView.separated(
-                          padding: EdgeInsets.zero,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: 6,
-                          itemBuilder: (itemBuilder, index) {
+                      shrinkWrap: true,
+                      padding: EdgeInsets.zero,
+                      itemCount: 6,
+                      itemBuilder: (itemBuilder, index) {
                             return OpenContainer(
                               openElevation: 0,
                               openColor: Colors.transparent,
-                              closedColor: Theme.of(context).colorScheme.outlineVariant.withOpacity(0.01),
+                              closedColor:
+                              Theme.of(context)
+                                  .colorScheme
+                                  .outlineVariant
+                                  .withOpacity(0.01),
                               closedElevation: 0,
                               closedShape: const Border(),
                               openShape: const Border(),
-                              transitionDuration: const Duration(milliseconds: 600),
+                              transitionDuration: const Duration(milliseconds: 450),
                               transitionType: ContainerTransitionType.fade,
                               openBuilder: (context, openContainer) => ExpandLesson(title: 'List Menu Item ${index + 1}'),
                               closedBuilder: (context, openContainer) {
@@ -122,75 +151,74 @@ class _HomeNavState extends State<Home> {
                                   onLongPress: () => {},
                                   onTap: openContainer,
                                   child: Row(
-                                        children: [
-                                          SizedBox(
-                                            width: width / 3.8,
-                                            height: height * (0.5362) / 6,
-                                            child: Center(
-                                                child: Text(
-                                                    lessonTime[index],
-                                                    style: GoogleFonts.manrope(
-                                                      fontSize: 14,
-                                                      fontWeight: FontWeight.w400,
-                                                      letterSpacing: -0.3
-                                                    )
-                                                )
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: lessons[index]['second'] == '' ?
-                                            Text(
-                                                lessons[index]['first']!,
+                                    children: [
+                                      SizedBox(
+                                        width: width / 3.6,
+                                        // height: (height - ((height * 0.3) - 20) - 160)/ 6,
+                                        height: calculateListItemHeight(context, height * 0.001) - height * 0.05,
+                                        child: Center(
+                                            child: Text(
+                                                lessonTime[index],
                                                 style: GoogleFonts.manrope(
-                                                  letterSpacing: -0.3,
-                                                ),
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w400,
+                                                  letterSpacing: -0.3
+                                                )
                                             )
-                                                :
-                                            Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  Text(
-                                                    lessons[index]['first']!,
-                                                    overflow: TextOverflow.ellipsis,
-                                                    maxLines: 2,
-                                                    style: GoogleFonts.manrope(
-                                                      fontSize: 15,
-                                                      fontWeight: FontWeight.w700,
-                                                      letterSpacing: -0.3
-                                                    ),),
-                                                  const Gap(4),
-                                                  Text(
-                                                    lessons[index]['second']!,
-                                                    maxLines: 1,
-                                                    style: GoogleFonts.manrope(
-                                                      fontWeight: FontWeight.w400,
-                                                      letterSpacing: -0.3
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                          ),
-                                        ],
+                                        ),
                                       ),
+                                      lessons[index]['second'] == '' ? // if string is empty then 'Get rest...'
+                                      Text(
+                                          lessons[index]['first']!,
+                                          style: GoogleFonts.manrope(
+                                            letterSpacing: -0.3,
+                                          ),
+                                        maxLines: 1,
+                                      )
+                                          :
+                                      Flexible(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text(
+                                              lessons[index]['first']!,
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 2,
+                                              style: GoogleFonts.manrope(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w700,
+                                                letterSpacing: -0.3
+                                              ),),
+                                            const Gap(4),
+                                            Text(
+                                              lessons[index]['second']!,
+                                              maxLines: 1,
+                                              style: GoogleFonts.manrope(
+                                                fontWeight: FontWeight.w400,
+                                                letterSpacing: -0.3
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 );
                               },
                             );
                           }, separatorBuilder: (BuildContext context, int index) {
                           return Divider(
                             height: 0,
-                            indent: width / 3.8,
+                            indent: width / 3.6,
                             endIndent: 0,
                           );
                         },
-                        )
+                      )
                     ),
                 ),
-
             ],
           ),
-      )
     );
   }
-
 }

@@ -1,5 +1,7 @@
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:schedule_app/modules/NavigationBarWidgets/SettingsPage.dart';
 import 'package:schedule_app/modules/NavigationBarWidgets/home.dart';
 import 'package:schedule_app/modules/NavigationBarWidgets/transcriptPage.dart';
@@ -18,15 +20,18 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       color: Colors.white,
       theme: ThemeData(
+        // textTheme: GoogleFonts.manropeTextTheme(
+        //   Theme.of(context).textTheme,
+        // ),
         useMaterial3: true,
         brightness: Brightness.light,
-        colorSchemeSeed: Colors.lightGreen.shade500,
+        colorSchemeSeed: Colors.blue.shade100,
       ),
 
       darkTheme: ThemeData(
         useMaterial3: true,
         brightness: Brightness.dark,
-        colorSchemeSeed: Colors.lightGreen.shade400,
+        colorSchemeSeed: Colors.blue.shade100,
       ),
       themeMode: ThemeMode.system,
       home: const MyHomePage(title: 'Schedule app'),
@@ -58,6 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     Brightness appBrightness = Theme.of(context).brightness;
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -65,22 +71,15 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(
-        // status bar
-        statusBarColor: Colors.transparent,
-        statusBarBrightness: appBrightness,
-        statusBarIconBrightness:
-        appBrightness == Brightness.dark ? Brightness.light : Brightness.dark,
-
-        // system navigation bar
-        // Setting a transparent navigation bar color
-        systemNavigationBarColor: Colors.transparent,
-        systemNavigationBarContrastEnforced: false,
+      value: FlexColorScheme.themedSystemNavigationBar(
+        context,
+        noAppBar: true,
+        systemNavBarStyle: FlexSystemNavBarStyle.transparent,
       ),
       child: Scaffold(
         bottomNavigationBar: NavigationBar(
           labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-          height: 90,
+          height: 80,
           onDestinationSelected: (int index) {
             setState(() {
               currentPageIndex = index;
@@ -95,8 +94,8 @@ class _MyHomePageState extends State<MyHomePage> {
               tooltip: 'Schedule',
             ),
             NavigationDestination(
-              selectedIcon: Icon(Icons.text_increase),
-              icon: Icon(Icons.text_increase_rounded),
+              selectedIcon: Icon(Icons.text_increase_rounded),
+              icon: Icon(Icons.text_increase_outlined),
               label: 'Transcript',
               tooltip: 'Transcript',
             ),
