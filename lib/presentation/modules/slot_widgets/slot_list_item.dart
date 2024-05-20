@@ -22,7 +22,7 @@ class ScheduleListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onLongPress: () {},
+      onLongPress: () => {},
       onTap: onTap,
       child: Row(
         children: [
