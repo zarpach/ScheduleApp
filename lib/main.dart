@@ -1,13 +1,46 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:schedule_app/data/bloc/slot_repository.dart';
+import 'package:schedule_app/data/blocs/app_blocs.dart';
+import 'package:schedule_app/presentation/auth/signin_google.dart';
 import 'package:schedule_app/presentation/home_page.dart';
 import 'package:schedule_app/presentation/settings_page.dart';
 import 'package:schedule_app/presentation/transcript_page.dart';
+import 'data/bloc/auth_repository.dart';
+import 'data/blocs/app_events.dart';
+import 'data/blocs/auth_blocs.dart';
+import 'data/local_storage_service.dart';
+import 'firebase_options.dart';
 import 'internal/application.dart';
 
-void main() {
-  runApp(const ScheduleApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  final authRepository = AuthRepository();
+  final slotRepository = SlotRepository();
+  final localStorageService = LocalStorageService();
+
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => AuthBloc(authRepository, localStorageService)
+            ..add(CheckLoginStatus()),
+        ),
+        BlocProvider(
+          create: (context) => SlotBloc(slotRepository)
+            ..add(LoadSlotEvent()),
+        ),
+      ],
+      child: const ScheduleApp()
+    ),
+  );
 }
 
 class MyHomePage extends StatefulWidget {
@@ -20,6 +53,20 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int currentPageIndex = 0;
+
+  late Image myImage;
+
+  @override
+  void initState() {
+    super.initState();
+    myImage = Image.asset('assets/images/backgroundSignin.png');
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    precacheImage(myImage.image, context);
+  }
 
   @override
   Widget build(BuildContext context) {

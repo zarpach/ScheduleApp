@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:schedule_app/presentation/auth/signin_google.dart';
 
+import '../data/blocs/auth_blocs.dart';
 import '../main.dart';
 
 class ScheduleApp extends StatelessWidget {
@@ -45,7 +48,15 @@ class ScheduleApp extends StatelessWidget {
         colorSchemeSeed: Colors.blue.shade100,
       ),
       themeMode: ThemeMode.system,
-      home: const MyHomePage(title: 'Schedule app'),
+      home: BlocBuilder<AuthBloc, AuthState>(
+        builder: (context, state) {
+          if (state is AuthAuthenticated) {
+            return const MyHomePage(title: 'My IUCA',);
+          } else {
+            return const SigninGoogle();
+          }
+        },
+      ),
     );
   }
 }

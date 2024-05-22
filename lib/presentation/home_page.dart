@@ -1,7 +1,9 @@
 import 'package:awesome_select/awesome_select.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
+import 'package:schedule_app/data/blocs/app_blocs.dart';
 import 'package:schedule_app/presentation/modules/greeting_widget/greeting_widget.dart';
 import 'package:schedule_app/presentation/modules/slot_widgets/slot_list.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
@@ -16,8 +18,8 @@ class Home extends StatefulWidget {
 
 class _HomeNavState extends State<Home> {
   List<String> lessonTime = [
-    '8:00 — 9:20',
-    '9:30 — 10:50',
+    '08:00 — 9:20',
+    '09:30 — 10:50',
     '11:05 — 12:25',
     '12:55 — 14:15',
     '14:30 — 15:50',
@@ -74,7 +76,6 @@ class _HomeNavState extends State<Home> {
           ),
           const Gap(16),
           SlotListWidget(
-              lessons: lessons,
               lessonTime: lessonTime,
               width: width,
               height: height

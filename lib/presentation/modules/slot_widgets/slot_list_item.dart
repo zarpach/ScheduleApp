@@ -3,20 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../domain/model/slot.dart';
+
 class ScheduleListItem extends StatelessWidget {
-  final Map<String, String> lesson;
+  final Slot slot;
   final String time;
   final double width;
   final double height;
   final void Function() onTap;
+  final bool isSlotNull;
 
   const ScheduleListItem({
     super.key,
-    required this.lesson,
+    required this.slot,
     required this.time,
     required this.width,
     required this.height,
     required this.onTap,
+    required this.isSlotNull
   });
 
   @override
@@ -40,9 +44,9 @@ class ScheduleListItem extends StatelessWidget {
               ),
             ),
           ),
-          lesson['second'] == ''
+          isSlotNull
               ? Text(
-            lesson['first']!,
+            'Get rest...',
             style: GoogleFonts.manrope(
               letterSpacing: -0.3,
             ),
@@ -54,7 +58,7 @@ class ScheduleListItem extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  lesson['first']!,
+                  slot.announcementSection.announcement.course.nameEng,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
                   style: GoogleFonts.manrope(
@@ -65,7 +69,7 @@ class ScheduleListItem extends StatelessWidget {
                 ),
                 const Gap(4),
                 Text(
-                  lesson['second']!,
+                  slot.lessonRoom.roomName,
                   maxLines: 1,
                   style: GoogleFonts.manrope(
                     fontWeight: FontWeight.w400,
