@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../domain/model/slot.dart';
 
 class ScheduleListItem extends StatelessWidget {
-  final Slot slot;
+  final Slot? slot;
   final String time;
   final double width;
   final double height;
@@ -45,6 +45,7 @@ class ScheduleListItem extends StatelessWidget {
             ),
           ),
           isSlotNull
+
               ? Text(
             'Get rest...',
             style: GoogleFonts.manrope(
@@ -58,7 +59,7 @@ class ScheduleListItem extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  slot.announcementSection.announcement.course.nameEng,
+                  slot!.announcementSection.announcement.course.nameEng,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
                   style: GoogleFonts.manrope(
@@ -69,7 +70,16 @@ class ScheduleListItem extends StatelessWidget {
                 ),
                 const Gap(4),
                 Text(
-                  slot.lessonRoom.roomName,
+                  slot!.lessonRoom.roomName,
+                  maxLines: 1,
+                  style: GoogleFonts.manrope(
+                    fontWeight: FontWeight.w400,
+                    letterSpacing: -0.3,
+                  ),
+                ),
+                const Gap(4),
+                Text(
+                  slot!.instructorUserId,
                   maxLines: 1,
                   style: GoogleFonts.manrope(
                     fontWeight: FontWeight.w400,

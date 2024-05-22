@@ -1,19 +1,17 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
 
 class GreetingWidget extends StatelessWidget {
-  final String username;
   final Brightness appBrightness;
   final void Function() onTap;
   final String dayOfWeek;
 
   const GreetingWidget({
     super.key,
-    required this.username,
     required this.appBrightness,
     required this.onTap,
     required this.dayOfWeek
@@ -21,6 +19,8 @@ class GreetingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final User? user = FirebaseAuth.instance.currentUser;
+    final String username = user?.displayName?.split(' ')[0] ?? "stranger";
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.end,

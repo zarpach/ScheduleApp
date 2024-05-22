@@ -1,9 +1,7 @@
 import 'package:awesome_select/awesome_select.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
-import 'package:schedule_app/data/blocs/app_blocs.dart';
 import 'package:schedule_app/presentation/modules/greeting_widget/greeting_widget.dart';
 import 'package:schedule_app/presentation/modules/slot_widgets/slot_list.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
@@ -18,12 +16,12 @@ class Home extends StatefulWidget {
 
 class _HomeNavState extends State<Home> {
   List<String> lessonTime = [
-    '08:00 — 9:20',
-    '09:30 — 10:50',
-    '11:05 — 12:25',
-    '12:55 — 14:15',
-    '14:30 — 15:50',
-    '16:05 — 17:25',
+    '08:00 – 09:20',
+    '09:30 – 10:50',
+    '11:05 – 12:25',
+    '12:55 – 14:15',
+    '14:30 – 15:50',
+    '16:05 – 17:25',
   ];
 
   List<Map<int, String>> days = [
@@ -68,7 +66,6 @@ class _HomeNavState extends State<Home> {
             // SizedBox will take 1/3 (approximately) of the device area
             height: height * 0.3,
             child: GreetingWidget(
-              username: 'Eraaly',
               appBrightness: appBrightness,
               onTap: () => showScheduleViewModal(context, options, days),
               dayOfWeek: DateFormat('EEEE').format(DateTime.now()),

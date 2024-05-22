@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'announcement_section.dart';
 import 'lesson_period.dart';
 import 'lesson_room.dart';
@@ -6,7 +5,7 @@ import 'semester.dart';
 import 'department.dart';
 import 'group.dart';
 
-// Slot class
+
 class Slot {
   final String id;
   final Department department;

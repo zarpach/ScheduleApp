@@ -6,7 +6,7 @@ class AnnouncementSection {
   final Announcement announcement;
   final int announcementId;
   final String instructorUserId;
-  final int credits;
+  final double credits;
   final String section;
 
   AnnouncementSection({

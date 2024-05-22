@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart';
 
@@ -15,15 +16,23 @@ class SlotRepository {
         Uri.parse(baseURL),
         headers: {
           'Authorization': 'Bearer $idToken',
-          'Content-Type': 'application/x-www-form-urlencoded'
+          "Accept": "application/json"
         },
       );
     if (response.statusCode == 200) {
-      final List result = jsonDecode(response.body)['slotsForMobileApp'];
-      print(result);
-      return result.map((e) => Slot.fromJson(e)).toList();
+      try {
+        final data = jsonDecode(response.body);
+        final slotList = List<Slot>.from(data['slotsForMobileApp'].map((e) => Slot.fromJson(e[0])));
+        return slotList;
+      } on FormatException catch (e) {
+        throw Exception('Failed to parse JSON data: ${e.message}');
+      } on HttpException catch (e) {
+        throw Exception('Network error: ${e.message}');
+      }
     } else {
-      throw Exception(response.reasonPhrase);
+      throw Exception('Failed to load slots: ${response.reasonPhrase}');
+
     }
+
   }
 }

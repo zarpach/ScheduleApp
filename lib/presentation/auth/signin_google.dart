@@ -55,6 +55,7 @@ class SigninGoogle extends StatelessWidget {
                         children: [
                           const Image(
                             filterQuality: FilterQuality.high,
+                            isAntiAlias: true,
                             image: AssetImage("assets/images/googleLogo.png"),
                             height: 36,
                             width: 36,
