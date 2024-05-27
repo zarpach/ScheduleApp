@@ -2,23 +2,40 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart';
+import 'package:schedule_app/domain/internal/baseUrl.dart';
 
 import '../../domain/model/slot.dart';
 
 class SlotRepository {
-  String baseURL = 'https://2283-217-29-24-183.ngrok-free.app/Slots/GetSlotsForMobileApp?departmentId=14&semesterId=13&dayOfWeek=1&groupId=29';
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-  Future<List<Slot>> getSlots() async {
+  Future<List<Slot>> getSlots({
+    required int departmentId,
+    required int groupId,
+    required int dayOfWeek,
+  }) async {
     final User? user = _firebaseAuth.currentUser;
     final idToken = await user?.getIdToken();
+    final slotUrl = BaseUrl();
+    final url = Uri.https(
+      slotUrl.url,
+      'Slots/GetSlotsForMobileApp',
+      {
+        'departmentId' : departmentId.toString(),
+        'semesterId': '13',
+        'dayOfWeek': dayOfWeek.toString(),
+        'groupId': groupId.toString()
+      }
+    );
+    print(url);
     Response response = await get(
-        Uri.parse(baseURL),
-        headers: {
-          'Authorization': 'Bearer $idToken',
-          "Accept": "application/json"
-        },
-      );
+      url,
+      headers: {
+        'Authorization': 'Bearer $idToken',
+        "Accept": "application/json"
+      },
+    );
+
     if (response.statusCode == 200) {
       try {
         final data = jsonDecode(response.body);
@@ -31,8 +48,6 @@ class SlotRepository {
       }
     } else {
       throw Exception('Failed to load slots: ${response.reasonPhrase}');
-
     }
-
   }
 }

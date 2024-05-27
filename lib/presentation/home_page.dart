@@ -1,10 +1,12 @@
-import 'package:awesome_select/awesome_select.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:schedule_app/presentation/modules/greeting_widget/greeting_widget.dart';
 import 'package:schedule_app/presentation/modules/slot_widgets/slot_list.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
+import '../data/blocs/app/app_blocs.dart';
+import '../data/blocs/app/app_events.dart';
 import 'modules/modal_sheets/schedule_settings_modal.dart';
 
 class Home extends StatefulWidget {
@@ -24,14 +26,6 @@ class _HomeNavState extends State<Home> {
     '16:05 – 17:25',
   ];
 
-  List<Map<int, String>> days = [
-    {1: 'Monday'},
-    {2: 'Tuesday'},
-    {3: 'Wednesday'},
-    {4: 'Thursday'},
-    {5: 'Friday'},
-    {6: 'Saturday'},
-  ];
 
   List<Map<String, String>> lessons = [
     {'first': 'Kyrgyz Language and Literature', 'second': 'Sharshenbek u.'},
@@ -42,15 +36,6 @@ class _HomeNavState extends State<Home> {
     {'first': 'Get rest...', 'second': ''},
   ];
 
-  int? selectedDayIndex;
-  String? selectedDepartment;
-  String? selectedGroup;
-
-  List<S2Choice<String>> options = [
-    S2Choice<String>(value: 'ion', title: 'Ionic'),
-    S2Choice<String>(value: 'flu', title: 'Flutter'),
-    S2Choice<String>(value: 'rea', title: 'React Native'),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -67,8 +52,50 @@ class _HomeNavState extends State<Home> {
             height: height * 0.3,
             child: GreetingWidget(
               appBrightness: appBrightness,
-              onTap: () => showScheduleViewModal(context, options, days),
               dayOfWeek: DateFormat('EEEE').format(DateTime.now()),
+              onTap: () =>   WoltModalSheet.show(
+                  useSafeArea: true,
+                  context: context,
+                  pageListBuilder: (modalSheetContext) {
+                    return [
+                      WoltModalSheetPage(
+                        scrollController: ScrollController(),
+                        navBarHeight: 32,
+                        child: const ScheduleModalContent(),
+
+                        // pageTitle: const Center(
+                        //     child:
+                        //   ),
+                        stickyActionBar: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            children: [
+                              ElevatedButton(
+                                onPressed: () => Navigator.of(context).pop(),
+                                child: const SizedBox(
+                                  width: double.infinity,
+                                  child: Center(child: Text('Cancel')),
+                                ),
+                              ),
+
+                              FilledButton(
+                                onPressed: () => {
+                                  context.read<SlotBloc>().add(LoadSlotEvent()),
+                                  Navigator.of(context).pop(),
+                                },
+                                child: const SizedBox(
+                                  width: double.infinity,
+                                  child: Center(child: Text('Save')),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        // Other properties...
+                      )
+                    ];
+                  }
+              ),
             ),
           ),
           const Gap(16),
@@ -81,49 +108,4 @@ class _HomeNavState extends State<Home> {
       ),
     );
   }
-}
-
-void showScheduleViewModal(BuildContext context, List<S2Choice<String>> options, List<Map<int, String>> days) {
-  WoltModalSheet.show(
-      useSafeArea: true,
-      context: context,
-      pageListBuilder: (modalSheetContext) {
-        return [
-          WoltModalSheetPage(
-            navBarHeight: 32,
-            child: StatefulBuilder(
-              builder: (BuildContext context, StateSetter setModalState) {
-                return ScheduleModalContent(
-                    options: options,
-                    days: days);
-              },
-            ),
-            pageTitle: const Center(child: Text('Schedule view')),
-            stickyActionBar: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  ElevatedButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const SizedBox(
-                      width: double.infinity,
-                      child: Center(child: Text('Cancel')),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  FilledButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const SizedBox(
-                      width: double.infinity,
-                      child: Center(child: Text('Save')),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            // Other properties...
-          )
-        ];
-      }
-  );
 }

@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-import '../../domain/model/slot.dart';
+import '../../../domain/model/slot.dart';
 
 @immutable
 abstract class SlotState extends Equatable {}
@@ -24,3 +24,4 @@ class SlotErrorState extends SlotState {
   @override
   List<Object?> get props => [error];
 }
+

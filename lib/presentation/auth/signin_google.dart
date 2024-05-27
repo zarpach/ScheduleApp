@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../data/blocs/auth_blocs.dart';
+import '../../data/blocs/auth/auth_blocs.dart';
 
 class SigninGoogle extends StatelessWidget {
   const SigninGoogle({super.key});

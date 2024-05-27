@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:schedule_app/presentation/auth/signin_google.dart';
 
-import '../data/blocs/auth_blocs.dart';
+import '../data/blocs/auth/auth_blocs.dart';
 import '../main.dart';
 
 class ScheduleApp extends StatelessWidget {
@@ -17,7 +17,14 @@ class ScheduleApp extends StatelessWidget {
       color: Colors.white,
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
-        fontFamily: GoogleFonts.manrope().fontFamily,
+        fontFamily: "Manrope",
+        textTheme: const TextTheme(
+          bodyMedium: TextStyle(fontWeight: FontWeight.w500),
+          labelSmall: TextStyle(
+              fontWeight: FontWeight.w600, letterSpacing: 0),
+          labelLarge: TextStyle(fontWeight: FontWeight.w900),
+          labelMedium: TextStyle(fontWeight: FontWeight.w700)
+        ),
         useMaterial3: true,
         brightness: Brightness.light,
         colorSchemeSeed: Colors.blue.shade100,

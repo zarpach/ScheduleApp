@@ -4,15 +4,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:schedule_app/data/bloc/search_repository.dart';
 import 'package:schedule_app/data/bloc/slot_repository.dart';
-import 'package:schedule_app/data/blocs/app_blocs.dart';
-import 'package:schedule_app/presentation/auth/signin_google.dart';
+import 'package:schedule_app/data/blocs/app/app_blocs.dart';
+import 'package:schedule_app/data/blocs/search/search_blocs.dart';
+import 'package:schedule_app/data/blocs/search/search_events.dart';
 import 'package:schedule_app/presentation/home_page.dart';
 import 'package:schedule_app/presentation/settings_page.dart';
 import 'package:schedule_app/presentation/transcript_page.dart';
 import 'data/bloc/auth_repository.dart';
-import 'data/blocs/app_events.dart';
-import 'data/blocs/auth_blocs.dart';
+import 'data/blocs/app/app_events.dart';
+import 'data/blocs/auth/auth_blocs.dart';
 import 'data/local_storage_service.dart';
 import 'firebase_options.dart';
 import 'internal/application.dart';
@@ -24,6 +26,7 @@ void main() async {
   );
   final authRepository = AuthRepository();
   final slotRepository = SlotRepository();
+  final searchRepository = SearchRepository();
   final localStorageService = LocalStorageService();
 
   runApp(
@@ -35,8 +38,11 @@ void main() async {
         ),
         BlocProvider(
           create: (context) => SlotBloc(slotRepository)
-            ..add(LoadSlotEvent()),
+            ..add(LoadSlotEvent()
+          ),
         ),
+        BlocProvider(create: (context) => SearchBloc(searchRepository)
+        ..add(FetchSlotSearchParametersEvent()))
       ],
       child: const ScheduleApp()
     ),

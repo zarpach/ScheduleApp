@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:schedule_app/data/blocs/auth_blocs.dart';
-import 'package:schedule_app/presentation/auth/signin_google.dart';
+import 'package:schedule_app/data/blocs/auth/auth_blocs.dart';
 
 class CardTile extends StatelessWidget {
   const CardTile({super.key});
