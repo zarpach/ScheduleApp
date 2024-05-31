@@ -13,10 +13,10 @@ class ScheduleModalContent extends StatefulWidget {
   const ScheduleModalContent({super.key});
 
   @override
-  _ScheduleModalContentState createState() => _ScheduleModalContentState();
+  ScheduleModalContentState createState() => ScheduleModalContentState();
 }
 
-class _ScheduleModalContentState extends State<ScheduleModalContent> {
+class ScheduleModalContentState extends State<ScheduleModalContent> {
   List<Map<int, String>> days = [
     {1: 'Monday'},
     {2: 'Tuesday'},
@@ -32,7 +32,7 @@ class _ScheduleModalContentState extends State<ScheduleModalContent> {
   final String loadingString = 'Loading...';
   int selectedDepartment = 0;
   int selectedGroup = 0;
-  int selectedDayIndex = 0;
+  int selectedDayIndex = 1;
   List<S2Choice<int>> departmentOptions = [];
   List<S2Choice<int>> groupOptions = [];
 
@@ -70,7 +70,7 @@ class _ScheduleModalContentState extends State<ScheduleModalContent> {
               SmartSelect.single(
                 title: departmentString,
                 onChange: (state) {},
-                choiceItems: const [],
+                choiceItems: const <S2Choice<Object?>>[],
                 tileBuilder: (context, state) {
                   return S2Tile(
                     isLoading: true,
@@ -85,7 +85,7 @@ class _ScheduleModalContentState extends State<ScheduleModalContent> {
               SmartSelect.single(
                 title: groupString,
                 onChange: (state) {},
-                choiceItems: const [],
+                choiceItems: const <S2Choice<Object?>>[],
                 tileBuilder: (context, state) {
                   return S2Tile(
                     isLoading: true,
@@ -114,18 +114,30 @@ class _ScheduleModalContentState extends State<ScheduleModalContent> {
                   );
                 }).toList(),
               ),
-              Row(
-                children: [
-                  OutlinedButton(
-                      onPressed: () => {},
-                      child: const Text('Cancel')),
-                  FilledButton(
-                    onPressed: () {
-                      context.read<SlotBloc>().add(LoadSlotEvent());
-                    },
-                    child: const Text('Save'),
-                  ),
-                ],
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    OutlinedButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const SizedBox(
+                        width: double.infinity,
+                        child: Center(child: Text('Cancel')),
+                      ),
+                    ),
+
+                    FilledButton(
+                      onPressed: () => {
+                        context.read<SlotBloc>().add(LoadSlotEvent()),
+                        Navigator.of(context).pop(),
+                      },
+                      child: const SizedBox(
+                        width: double.infinity,
+                        child: Center(child: Text('Save')),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           );
@@ -147,74 +159,80 @@ class _ScheduleModalContentState extends State<ScheduleModalContent> {
           );
         }
 
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SmartSelect<int>.single(
-              title: departmentString,
-              selectedValue: selectedDepartment,
-              choiceItems: departmentOptions,
-              modalType: S2ModalType.bottomSheet,
-              onChange: (state) {
-                setState(() {
-                  selectedDepartment = state.value;
-                  groupOptions = groupOptions.where((item) => item.value == selectedDepartment).toList();
-                });
-                saveOptions();
-              },
-            ),
-            SmartSelect<int>.single(
-              title: groupString,
-              selectedValue: selectedGroup,
-              choiceItems: groupOptions,
-              modalType: S2ModalType.bottomSheet,
-              onChange: (state) {
-                setState(() {
-                  selectedGroup = state.value;
-                });
-                saveOptions();
-              },
-            ),
-            const Text('Day of week'),
-            const Gap(10.0),
-            Wrap(
-              spacing: 5.0,
-              children: List<Widget>.generate(6, (int index) {
-                return ChoiceChip(
-                  label: Text(days[index].values.first),
-                  selected: selectedDayIndex == index,
-                  onSelected: (bool selected) {
-                    setState(() {
-                      selectedDayIndex = selected ? index : 1;
-                    });
-                    saveOptions();
-                  },
-                );
-              }).toList(),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 16),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  OutlinedButton(
-                      onPressed: () => {
-                        Navigator.of(context).pop()
-                      },
-                      child: const Text('Cancel')),
-                  const Gap(8),
-                  FilledButton(
-                    onPressed: () {
-                      context.read<SlotBloc>().add(LoadSlotEvent());
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text('Save'),
-                  ),
-                ],
+        return Padding(
+          padding: const EdgeInsets.only(top: 0.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SmartSelect<int>.single(
+                title: departmentString,
+                selectedValue: selectedDepartment,
+                choiceItems: departmentOptions,
+                modalType: S2ModalType.bottomSheet,
+                onChange: (state) {
+                  setState(() {
+                    selectedDepartment = state.value;
+                    groupOptions = groupOptions.where((item) => item.value == selectedDepartment).toList();
+                  });
+                  saveOptions();
+                },
               ),
-            ),
-          ],
+              SmartSelect<int>.single(
+                title: groupString,
+                selectedValue: selectedGroup,
+                choiceItems: groupOptions,
+                modalType: S2ModalType.bottomSheet,
+                onChange: (state) {
+                  setState(() {
+                    selectedGroup = state.value;
+                  });
+                  saveOptions();
+                },
+              ),
+              const Text('Day of week'),
+              const Gap(10.0),
+              Wrap(
+                spacing: 5.0,
+                children: List<Widget>.generate(6, (int index) {
+                  return ChoiceChip(
+                    label: Text(days[index].values.first),
+                    selected: selectedDayIndex == index + 1,
+                    onSelected: (bool selected) {
+                      setState(() {
+                        selectedDayIndex = selected ? index + 1 : 1;
+                      });
+                      saveOptions();
+                    },
+                  );
+                }).toList(),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    OutlinedButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const SizedBox(
+                        width: double.infinity,
+                        child: Center(child: Text('Cancel')),
+                      ),
+                    ),
+
+                    FilledButton(
+                      onPressed: () => {
+                        context.read<SlotBloc>().add(LoadSlotEvent()),
+                        Navigator.of(context).pop(),
+                      },
+                      child: const SizedBox(
+                        width: double.infinity,
+                        child: Center(child: Text('Save')),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         );
       },
     );

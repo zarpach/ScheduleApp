@@ -17,7 +17,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeNavState extends State<Home> {
-  List<String> lessonTime = [
+  static const List<String> lessonTime = [
     '08:00 – 09:20',
     '09:30 – 10:50',
     '11:05 – 12:25',
@@ -25,17 +25,6 @@ class _HomeNavState extends State<Home> {
     '14:30 – 15:50',
     '16:05 – 17:25',
   ];
-
-
-  List<Map<String, String>> lessons = [
-    {'first': 'Kyrgyz Language and Literature', 'second': 'Sharshenbek u.'},
-    {'first': 'Algebra and Geometry', 'second': 'R.A. Asanov'},
-    {'first': 'Introduction to IT', 'second': 'A.Zh. Ashimova'},
-    {'first': 'Introduction to Computers', 'second': 'A.Zh. Ashimova'},
-    {'first': 'Introduction to object-oriented programming I', 'second': 'Sharshenbek u.'},
-    {'first': 'Get rest...', 'second': ''},
-  ];
-
 
   @override
   Widget build(BuildContext context) {
@@ -53,45 +42,14 @@ class _HomeNavState extends State<Home> {
             child: GreetingWidget(
               appBrightness: appBrightness,
               dayOfWeek: DateFormat('EEEE').format(DateTime.now()),
-              onTap: () =>   WoltModalSheet.show(
+              onTap: () => WoltModalSheet.show<void>(
                   useSafeArea: true,
                   context: context,
                   pageListBuilder: (modalSheetContext) {
                     return [
                       WoltModalSheetPage(
-                        scrollController: ScrollController(),
                         navBarHeight: 32,
                         child: const ScheduleModalContent(),
-
-                        // pageTitle: const Center(
-                        //     child:
-                        //   ),
-                        stickyActionBar: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: Column(
-                            children: [
-                              ElevatedButton(
-                                onPressed: () => Navigator.of(context).pop(),
-                                child: const SizedBox(
-                                  width: double.infinity,
-                                  child: Center(child: Text('Cancel')),
-                                ),
-                              ),
-
-                              FilledButton(
-                                onPressed: () => {
-                                  context.read<SlotBloc>().add(LoadSlotEvent()),
-                                  Navigator.of(context).pop(),
-                                },
-                                child: const SizedBox(
-                                  width: double.infinity,
-                                  child: Center(child: Text('Save')),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        // Other properties...
                       )
                     ];
                   }

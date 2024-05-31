@@ -36,18 +36,20 @@ class SlotRepository {
       },
     );
 
-    if (response.statusCode == 200) {
-      try {
-        final data = jsonDecode(response.body);
-        final slotList = List<Slot>.from(data['slotsForMobileApp'].map((e) => Slot.fromJson(e[0])));
-        return slotList;
-      } on FormatException catch (e) {
-        throw Exception('Failed to parse JSON data: ${e.message}');
-      } on HttpException catch (e) {
-        throw Exception('Network error: ${e.message}');
-      }
-    } else {
-      throw Exception('Failed to load slots: ${response.reasonPhrase}');
-    }
+    print(response.body);
+    // if (response.statusCode == 200) {
+    //   try {
+    //
+    //   } on FormatException catch (e) {
+    //     throw Exception('Failed to parse JSON data: ${e.message}');
+    //   } on HttpException catch (e) {
+    //     throw Exception('Network error: ${e.message}');
+    //   }
+    // } else {
+    //   throw Exception('Failed to load slots: ${response.reasonPhrase}');
+    // }
+    final data = jsonDecode(response.body);
+    final slotList = List<Slot>.from(data['slotsForMobileApp'].map((e) => Slot.fromJson(e[0])));
+    return slotList;
   }
 }

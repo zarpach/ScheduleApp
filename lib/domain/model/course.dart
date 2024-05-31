@@ -3,7 +3,7 @@ class Course {
   final int id;
   final String nameEng;
   final String nameRus;
-  final String nameKir;
+  final String? nameKir;
   final String abbreviation;
   final String number;
   final int departmentId;
