@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:schedule_app/internal/BounceRefreshIndicatorPhysics.dart';
 import 'package:schedule_app/presentation/modules/slot_widgets/slot_list_item.dart';
 
 import '../../../data/blocs/app/app_blocs.dart';
@@ -92,13 +93,22 @@ class SlotListWidget extends StatelessWidget {
                   );
                 },
                 child: ListView.separated(
+                  physics: const BouncingScrollPhysics(parent: ClampingScrollPhysics()),
                   padding: EdgeInsets.zero,
                   itemCount: lessonTime.length,
                   itemBuilder: (context, index) {
+                    Slot? slot = slots.firstWhereOrNull(
+                            (element) => element.lessonPeriod.name == lessonTime[index]);
+                    String timeString = lessonTime[index];
+                    List<String> times = timeString.split(' – ');
+                    TimeOfDay startTime = parseTimeOfDay(times[0]);
+                    TimeOfDay endTime = parseTimeOfDay(times[1]);
                       return OpenContainer(
                         openElevation: 0,
                         openColor: Colors.transparent,
-                        closedColor: Theme.of(context).colorScheme.outlineVariant.withOpacity(0.01),
+                        closedColor: isValidTimeRange(startTime, endTime)
+                            ? Theme.of(context).colorScheme.outlineVariant.withOpacity(0.5)
+                            : Theme.of(context).colorScheme.outlineVariant.withOpacity(0.1),
                         closedElevation: 0,
                         closedShape: const Border(),
                         openShape: const Border(),
@@ -106,8 +116,7 @@ class SlotListWidget extends StatelessWidget {
                         transitionType: ContainerTransitionType.fade,
                         openBuilder: (context, openContainer) => ExpandLesson(title: 'List Menu Item ${index + 1}'),
                         closedBuilder: (context, openContainer) {
-                          Slot? slot = slots.firstWhereOrNull(
-                                  (element) => element.lessonPeriod.name == lessonTime[index]);
+
                           return ScheduleListItem(
                             slot: slot,
                             time: lessonTime[index],
@@ -136,4 +145,19 @@ class SlotListWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+
+bool isValidTimeRange(TimeOfDay startTime, TimeOfDay endTime) {
+  TimeOfDay now = TimeOfDay.now();
+  return ((now.hour > startTime.hour) || (now.hour == startTime.hour && now.minute >= startTime.minute))
+      && ((now.hour < endTime.hour) || (now.hour == endTime.hour && now.minute <= endTime.minute));
+}
+
+
+TimeOfDay parseTimeOfDay(String timeString) {
+  List<String> parts = timeString.split(':');
+  int hour = int.parse(parts[0]);
+  int minute = int.parse(parts[1]);
+  return TimeOfDay(hour: hour, minute: minute);
 }

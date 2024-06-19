@@ -63,6 +63,9 @@ class DefaultFirebaseOptions {
     messagingSenderId: '780379148966',
     projectId: 'schedule-419211',
     storageBucket: 'schedule-419211.appspot.com',
+    androidClientId: '780379148966-chik71pi8g67ukosdbk6fggrq9gf8g9j.apps.googleusercontent.com',
+    iosClientId: '780379148966-3et96ehaguf2018bigpj0f1v2ladvm3b.apps.googleusercontent.com',
     iosBundleId: 'com.example.scheduleApp',
   );
+
 }

@@ -19,10 +19,10 @@ class ScheduleApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
         fontFamily: "Manrope",
         textTheme: const TextTheme(
-          bodyMedium: TextStyle(fontWeight: FontWeight.w500),
+          bodyMedium: TextStyle(fontWeight: FontWeight.normal),
           labelSmall: TextStyle(
               fontWeight: FontWeight.w600, letterSpacing: 0),
-          labelLarge: TextStyle(fontWeight: FontWeight.w900),
+          labelLarge: TextStyle(fontWeight: FontWeight.w400),
           labelMedium: TextStyle(fontWeight: FontWeight.w700)
         ),
         useMaterial3: true,

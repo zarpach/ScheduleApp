@@ -1,5 +1,5 @@
 class BaseUrl {
-  String _url = '7fcb-212-241-24-135.ngrok-free.app';
+  String _url = '0b49-217-29-24-167.ngrok-free.app';
 
   String get url => _url;
 
