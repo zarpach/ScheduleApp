@@ -17,7 +17,7 @@ class CardTile extends StatelessWidget {
         height: height / 6,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(28),
-          color: Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.25),
+          color: Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.05),
         ),
       ),
     );

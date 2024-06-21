@@ -27,7 +27,7 @@ class ScheduleApp extends StatelessWidget {
         ),
         useMaterial3: true,
         brightness: Brightness.light,
-        colorSchemeSeed: Colors.blue.shade100,
+        colorSchemeSeed: Colors.indigo.shade100,
         navigationBarTheme: NavigationBarThemeData(
           labelTextStyle: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.selected)) {
